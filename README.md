@@ -2,14 +2,14 @@
 
 Files VA Sales Tax - Only Works on Google Chrome
 
-Simple way to file sales tax for remote sellers in Viringia.
+Simple way to file sales tax for remote sellers in Virginia.
 
 Virginia Requires all sales tax filings to be done on a local level.
 
 Set-up:
 This program requies you set up a .env file with the correct filing information. Exmaple Below.
 
-//.env
+.env
 
 ```
 VA_SALES_TAX_NUMBER = "Your_TIN_or_EIN"
