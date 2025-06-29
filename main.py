@@ -88,7 +88,7 @@ time.sleep(1)
 test_case = (f"//td[normalize-space()='{test_target_month_year}']/parent::tr//a[contains(text(),'Review/File')]")
 live_case = (f"//td[normalize-space()='{live_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
 
-current_month_button = driver.find_element(By.XPATH, test_case)
+current_month_button = driver.find_element(By.XPATH, live_case)
 current_month_button.click()
 
 
@@ -124,3 +124,17 @@ for _, row in tax_data.iterrows():
         print(f"Failed for row {index}: {e}")
 
 time.sleep(1)
+#click calculate button
+calculate_button = driver.find_element(By.NAME, 'st1Form:j_idt213')
+time.sleep(1)
+driver.execute_script("arguments[0].scrollIntoView(true);", calculate_button)
+time.sleep(1)
+calculate_button.click()
+
+time.sleep(1)
+#click button for review
+for_review_button = driver.find_element(By.NAME, 'st1Form:j_idt111')
+time.sleep(1)
+driver.execute_script("arguments[0].scrollIntoView(true);", for_review_button)
+time.sleep(1)
+for_review_button.click()
