@@ -12,6 +12,7 @@ from dateutil.relativedelta import relativedelta
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
+import pandas as pd
 import datetime
 
 
@@ -24,7 +25,11 @@ PASSWORD = os.getenv("VA_SALES_TAX_PW")
 FILING_URL = os.getenv("FILING_URL")
 
 service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service)
+options = webdriver.ChromeOptions()
+options.add_experimental_option("detach", True)
+driver = webdriver.Chrome(service=service,options=options)
+
+tax_data = pd.read_csv('data.csv')
 
 #Function to get Last Month date in the format to click the correct button for filing
 def get_current_filing_month():
@@ -32,7 +37,11 @@ def get_current_filing_month():
     text = last_month.strftime('%B %Y')
     return (text)
 
-target_month_year = get_current_filing_month()
+
+get_current_filing_month()
+
+test_target_month_year = "Jun 2025"
+live_target_month_year = get_current_filing_month()
 
 # #Opens Page and dismisses weird warning.
 driver.get(FILING_URL)
@@ -76,8 +85,12 @@ iframe = driver.switch_to.frame("tapsIFrame")
 time.sleep(1)
 
 #Calls Function to get correct Filing month, the previous month, and clicks it to open it.
-current_month_button = driver.find_element(By.XPATH, f"//td[normalize-space()='{target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
+test_case = (f"//td[normalize-space()='{test_target_month_year}']/parent::tr//a[contains(text(),'Review/File')]")
+live_case = (f"//td[normalize-space()='{live_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
+
+current_month_button = driver.find_element(By.XPATH, test_case)
 current_month_button.click()
+
 
 time.sleep(1)
 
@@ -93,5 +106,21 @@ time.sleep(1)
 #expands all to recieve numbies. 
 driver.execute_script("expandAll();")
 
+time.sleep(1)
 
 #Add function to fill out the boxes based on csv file. 
+
+for _, row in tax_data.iterrows():
+    index = int(row['worksheet_index'])  # 0, 1, 2...
+    value = str(row['gross_general_sales'])
+
+    try:
+        # Use the ID or name based on index
+        input_selector = f"st1Form:workSheet:{index}:j_idt148:grossSales"
+        input_elem = driver.find_element(By.NAME, input_selector)
+        input_elem.clear()
+        input_elem.send_keys(value)
+    except Exception as e:
+        print(f"Failed for row {index}: {e}")
+
+time.sleep(1)
