@@ -88,7 +88,7 @@ time.sleep(1)
 test_case = (f"//td[normalize-space()='{test_target_month_year}']/parent::tr//a[contains(text(),'Review/File')]")
 live_case = (f"//td[normalize-space()='{live_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
 
-current_month_button = driver.find_element(By.XPATH, live_case)
+current_month_button = driver.find_element(By.XPATH, test_case)
 current_month_button.click()
 
 
