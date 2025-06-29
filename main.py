@@ -34,7 +34,7 @@ tax_data = pd.read_csv('data.csv')
 #Function to get Last Month date in the format to click the correct button for filing
 def get_current_filing_month():
     last_month = datetime.datetime.now() - relativedelta(months=1)
-    text = last_month.strftime('%B %Y')
+    text = last_month.strftime('%b %Y')
     return (text)
 
 
@@ -111,11 +111,11 @@ time.sleep(1)
 #Add function to fill out the boxes based on csv file. 
 
 for _, row in tax_data.iterrows():
-    index = int(row['worksheet_index'])  # 0, 1, 2...
+    index = int(row['worksheet_index'])  
     value = str(row['gross_general_sales'])
 
     try:
-        # Use the ID or name based on index
+        # Find input index
         input_selector = f"st1Form:workSheet:{index}:j_idt148:grossSales"
         input_elem = driver.find_element(By.NAME, input_selector)
         input_elem.clear()
