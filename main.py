@@ -40,7 +40,8 @@ def get_current_filing_month():
 
 get_current_filing_month()
 
-test_target_month_year = "Jun 2025"
+
+test_target_month_year = "Jul 2025"
 live_target_month_year = get_current_filing_month()
 
 # #Opens Page and dismisses weird warning.
@@ -85,10 +86,10 @@ iframe = driver.switch_to.frame("tapsIFrame")
 time.sleep(1)
 
 #Calls Function to get correct Filing month, the previous month, and clicks it to open it.
-test_case = (f"//td[normalize-space()='{test_target_month_year}']/parent::tr//a[contains(text(),'Review/File')]")
+test_case = (f"//td[normalize-space()='{test_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
 live_case = (f"//td[normalize-space()='{live_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
 
-current_month_button = driver.find_element(By.XPATH, live_case)
+current_month_button = driver.find_element(By.XPATH, test_case)
 current_month_button.click()
 
 
