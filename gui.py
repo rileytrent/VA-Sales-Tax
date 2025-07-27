@@ -22,6 +22,15 @@ def get_current_filing_month():
             dropdown_values.append(text)
 get_current_filing_month()
 
+#get info from imput boxes
+def get_input_info():
+    file_month = dropdown.get()
+    ein = taxid_entry.get()
+    user = username_entry.get()
+    pw = password_entry.get()
+    file_path = choose_file_text.get()
+    file_tax(file_month, ein, user, pw, file_path)
+
 #create window and change title     
 root = Tk()
 root.title("VA-Sales-Tax-Filer")
@@ -43,7 +52,7 @@ username = Label(root, text="Username: ")
 password = Label(root, text="Password: ")
 choose_file = Button(root, text="Choose File: ",command=chooseFile)
 choose_file_text = Entry(root, border=3)
-file_now_button = Button(root, text="File Now!")
+file_now_button = Button(root, text="File Now!", command=get_input_info)
 taxid_entry = Entry(root, border=3)
 username_entry = Entry(root, border=3)
 password_entry = Entry(root, border=3,show="*")
@@ -61,7 +70,7 @@ password.grid(row=4, column=1, sticky='ew')
 password_entry.grid(row=4, column=2, columnspan=3, sticky='w')
 choose_file.grid(row=5, column=1, sticky='')
 choose_file_text.grid(row=5, column=2,columnspan=3, sticky='we')
-file_now_button.grid(row=6, column=4, sticky='w')
+file_now_button.grid(row=6, column=2, sticky='we')
 
 
 root.mainloop()

@@ -1,29 +1,30 @@
 # import requests
-import time
-import os
-from dotenv import load_dotenv
+# import os
+# from dotenv import load_dotenv
 # from bs4 import BeautifulSoup
-from selenium import webdriver
 # from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.service import Service as ChromeService
 # from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.common.keys import Keys
+# from dateutil.relativedelta import relativedelta
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
+# import datetime
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from dateutil.relativedelta import relativedelta
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, ElementClickInterceptedException
 import pandas as pd
-import datetime
+
 
 # period,tax_id, username_login, password_entry,file_path
-def file_tax():
-    load_dotenv()
+def file_tax(period,tax_id, username_login, password_entry,file_path):
+    # load_dotenv()
 
-    FILING_NUMBER = os.getenv("VA_SALES_TAX_NUMBER")
-    USERNAME_LOGIN = os.getenv("VA_SALES_TAX_LOGIN")
-    PASSWORD = os.getenv("VA_SALES_TAX_PW")
+    FILING_NUMBER = tax_id
+    USERNAME_LOGIN = username_login
+    PASSWORD = password_entry
     FILING_URL = "https://www.business.tax.virginia.gov/VTOL/tax/Login.xhtml"
     # os.getenv("FILING_URL")
 
@@ -33,20 +34,20 @@ def file_tax():
     driver = driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=options)
 # webdriver.Chrome(service=service,options=options)
 
-    tax_data = pd.read_csv('data.csv')
+    tax_data = pd.read_csv(file_path)
 
 #Function to get Last Month date in the format to click the correct button for filing
-    def get_current_filing_month():
-        last_month = datetime.datetime.now() - relativedelta(months=1)
-        text = last_month.strftime('%b %Y')
-        return (text)
+    # def get_current_filing_month():
+    #     last_month = datetime.datetime.now() - relativedelta(months=1)
+    #     text = last_month.strftime('%b %Y')
+    #     return (text)
 
 
-    get_current_filing_month()
+    # get_current_filing_month()
 
 
-    test_target_month_year = "Jul 2025"
-    live_target_month_year = get_current_filing_month()
+    test_target_month_year = period
+    # live_target_month_year = get_current_filing_month()
 
 # #Opens Page and dismisses weird warning.
     driver.get(FILING_URL)
@@ -91,7 +92,7 @@ def file_tax():
 
 #Calls Function to get correct Filing month, the previous month, and clicks it to open it.
     test_case = (f"//td[normalize-space()='{test_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
-    live_case = (f"//td[normalize-space()='{live_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
+    # live_case = (f"//td[normalize-space()='{live_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
 
     current_month_button = driver.find_element(By.XPATH, test_case)
     current_month_button.click()
@@ -145,4 +146,4 @@ def file_tax():
     for_review_button.click()
 
 
-file_tax()
+# file_tax("Jul 2025", "820620257", "BARKINGLABS", "EQE@bpu.bzv5ajh.yqn", "/Users/rileytrent/workspace/github.com/rileytrent/VA-Sales-Tax/data.csv")
