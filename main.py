@@ -1,10 +1,12 @@
-import requests
+# import requests
 import time
 import os
 from dotenv import load_dotenv
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
+# from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -24,10 +26,11 @@ USERNAME_LOGIN = os.getenv("VA_SALES_TAX_LOGIN")
 PASSWORD = os.getenv("VA_SALES_TAX_PW")
 FILING_URL = os.getenv("FILING_URL")
 
-service = Service(ChromeDriverManager().install())
+# service = Service(ChromeDriverManager().install())
 options = webdriver.ChromeOptions()
 options.add_experimental_option("detach", True)
-driver = webdriver.Chrome(service=service,options=options)
+driver = driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=options)
+# webdriver.Chrome(service=service,options=options)
 
 tax_data = pd.read_csv('data.csv')
 
