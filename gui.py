@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import filedialog, ttk
 from dateutil.relativedelta import relativedelta
 import datetime
+from main import file_tax
 
 
 #create choose file function
