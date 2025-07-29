@@ -16,10 +16,18 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import pandas as pd
+import subprocess
 
+#get current chrome version. 
+def get_chrome_ver():
+    output = subprocess.check_output(
+        ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "--version"]
+    )
+    return (output.decode('utf-8').strip().split()[-1])
+get_chrome_ver()
 
 # period,tax_id, username_login, password_entry,file_path
-def file_tax(period,tax_id, username_login, password_entry,file_path):
+def file_tax(period, tax_id, username_login, password_entry, file_path):
     # load_dotenv()
 
     FILING_NUMBER = tax_id
@@ -31,22 +39,15 @@ def file_tax(period,tax_id, username_login, password_entry,file_path):
 # service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
     options.add_experimental_option("detach", True)
-    driver = driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=options)
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(driver_version=get_chrome_ver()).install()),options=options)
 # webdriver.Chrome(service=service,options=options)
 
     tax_data = pd.read_csv(file_path)
 
-#Function to get Last Month date in the format to click the correct button for filing
-    # def get_current_filing_month():
-    #     last_month = datetime.datetime.now() - relativedelta(months=1)
-    #     text = last_month.strftime('%b %Y')
-    #     return (text)
+#Function to get Last Month date in the format to click the correct button for filing - Moved to GUI
 
 
-    # get_current_filing_month()
-
-
-    test_target_month_year = period
+    filing_month = period
     # live_target_month_year = get_current_filing_month()
 
 # #Opens Page and dismisses weird warning.
@@ -91,8 +92,7 @@ def file_tax(period,tax_id, username_login, password_entry,file_path):
     time.sleep(1)
 
 #Calls Function to get correct Filing month, the previous month, and clicks it to open it.
-    test_case = (f"//td[normalize-space()='{test_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
-    # live_case = (f"//td[normalize-space()='{live_target_month_year}']/parent::tr//a[contains(text(),'File Now')]")
+    test_case = (f"//td[normalize-space()='{filing_month}']/parent::tr//a[contains(text(),'File Now')]")
 
     current_month_button = driver.find_element(By.XPATH, test_case)
     current_month_button.click()
@@ -145,5 +145,3 @@ def file_tax(period,tax_id, username_login, password_entry,file_path):
     time.sleep(1)
     for_review_button.click()
 
-
-# file_tax("Jul 2025", "820620257", "BARKINGLABS", "EQE@bpu.bzv5ajh.yqn", "/Users/rileytrent/workspace/github.com/rileytrent/VA-Sales-Tax/data.csv")
