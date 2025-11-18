@@ -2,7 +2,8 @@ from tkinter import *
 from tkinter import filedialog, ttk
 from dateutil.relativedelta import relativedelta
 import datetime
-from main import VA_file_tax
+from va import VA_file_tax
+from nc import NC_file_tax
 
 
 #available states
@@ -38,12 +39,15 @@ def get_input_info():
     state_filed = state_dropdown.get()
     if state_filed == 'VA':
          VA_file_tax(file_month, ein, user, pw, file_path)
+    elif state_filed == 'nc':
+         pass
+        #  NC_file_tax(pass)
     else:
          print(state_filed)
 
 #create window and change title     
 root = Tk()
-root.title("VA-Sales-Tax-Filer")
+root.title("Sales-Tax-Filer")
 root.geometry("800x575")
 
 
