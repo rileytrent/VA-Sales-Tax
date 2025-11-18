@@ -5,3 +5,4 @@ data.csv
 __pycache__
 gui.spec
 build
+NC_TAX_TEMPLATE.csv
