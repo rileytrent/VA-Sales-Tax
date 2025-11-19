@@ -72,7 +72,13 @@ def NC_file_tax(contact_name, contact_email, contact_phone, account_id, period, 
 # service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
     options.add_experimental_option("detach", True)
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(driver_version=get_chrome_ver()).install()),options=options)
+
+    # 👉 Let webdriver-manager pick the correct driver version
+    driver_path = ChromeDriverManager().install()
+    driver = webdriver.Chrome(service=ChromeService(driver_path), options=options)
+    # options = webdriver.ChromeOptions()
+    # options.add_experimental_option("detach", True)
+    # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(driver_version=get_chrome_ver()).install()),options=options)
 
     driver.get(FILING_URL)
 
@@ -229,4 +235,4 @@ def NC_file_tax(contact_name, contact_email, contact_phone, account_id, period, 
     summary_button.click()
 
 #local testing 
-NC_file_tax(nc_test_login_name, nc_test_email, nc_test_phone, nc_test_account_id, nc_test_period, nc_test_ein, nc_test_template)
+# NC_file_tax(nc_test_login_name, nc_test_email, nc_test_phone, nc_test_account_id, nc_test_period, nc_test_ein, nc_test_template)

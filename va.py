@@ -39,7 +39,14 @@ def VA_file_tax(period, tax_id, username_login, password_entry, file_path):
 # service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
     options.add_experimental_option("detach", True)
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(driver_version=get_chrome_ver()).install()),options=options)
+    # 👉 Let webdriver-manager pick the correct driver version
+    driver_path = ChromeDriverManager().install()
+    driver = webdriver.Chrome(service=ChromeService(driver_path), options=options)
+    
+    #old driver setup
+    # options = webdriver.ChromeOptions()
+    # options.add_experimental_option("detach", True)
+    # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(driver_version=get_chrome_ver()).install()),options=options)
 # webdriver.Chrome(service=service,options=options)
 
     tax_data = pd.read_csv(file_path)
